@@ -7,8 +7,8 @@ plugins {
 
 android {
     namespace = "net.vielmond.ruapp"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 35 // flutter.compileSdkVersion
+    ndkVersion = "27.0.12077973" //flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -24,17 +24,26 @@ android {
         applicationId = "net.vielmond.ruapp"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 27 // flutter.minSdkVersion
+        targetSdk = 35 // flutter.targetSdkVersion
+        versionCode = 1 // flutter.versionCode
+        versionName = "1.0.0" // flutter.versionName
+    }
+
+    signingConfigs {
+        create("release") {
+            if (project.hasProperty("MYAPP_UPLOAD_STORE_FILE")) {
+                storeFile = file(project.property("MYAPP_UPLOAD_STORE_FILE").toString())
+                storePassword = project.property("MYAPP_UPLOAD_STORE_PASSWORD").toString()
+                keyAlias = project.property("MYAPP_UPLOAD_KEY_ALIAS").toString()
+                keyPassword = project.property("MYAPP_UPLOAD_KEY_PASSWORD").toString()
+            }
+        }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs["release"]
         }
     }
 }
